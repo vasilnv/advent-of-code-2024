@@ -101,7 +101,7 @@ public class Task1 {
 		public int j;
 		public int[] movement;
 		
-		public Candidate(int i, int j, int []movement) {
+		public Candidate(int i, int j, int[] movement) {
 			this.i = i;
 			this.j = j;
 			this.movement = movement;
