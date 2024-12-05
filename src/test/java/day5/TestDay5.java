@@ -13,7 +13,7 @@ public class TestDay5 extends TestCase {
     List<List<Integer>> sequences;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         input = "47|53\n" +
                 "97|13\n" +
                 "97|61\n" +
