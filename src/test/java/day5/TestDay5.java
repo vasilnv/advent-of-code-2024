@@ -4,7 +4,6 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TestDay5 extends TestCase {
@@ -50,7 +49,6 @@ public class TestDay5 extends TestCase {
 
     @Test
     public void testTask1() {
-
         Task1 task1 = new Task1();
         task1.createGraph(pairs);
 
@@ -66,7 +64,7 @@ public class TestDay5 extends TestCase {
 
     @Test
     public void testTask2() {
-        assertEquals(123, Task1.getTotalScoreErroneous(sequences, pairs));
+        assertEquals(123, Task2.getTotalScore(sequences, pairs));
     }
 
 }
