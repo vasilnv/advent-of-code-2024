@@ -9,75 +9,17 @@ import java.util.List;
 import java.util.Set;
 
 public class Task2 {
-	int[] start;
-
-	public boolean solve(char[][] board) {
-		for (int i = 0; i < board.length; i++) {
-			for (int j = 0; j < board[0].length; j++) {
-				if (board[i][j] == '^') {
-					start = new int[] {i,j};
-				}
-			}
-		}
-
-		int startX = start[0];
-		int startY = start[1];
-				
-		int[][] directions = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
-
-		int currDirection = 0;
-		int nextX = startX + directions[currDirection][0];
-		int nextY = startY + directions[currDirection][1];
-		char next = board[nextX][nextY];
-		Set<String> visited = new HashSet<>();
-		while (true) {
-			if (visited.contains(startX + "," + startY + "," + currDirection)) {
-				return true;
-			}
-			visited.add(startX + "," + startY + "," + currDirection);
-
-			nextX = startX + directions[currDirection][0];
-			nextY = startY + directions[currDirection][1];
-			if (nextX < 0 || nextY < 0 || nextX >= board.length || nextY >= board[0].length) {
-				return false;
-			}
-			next = board[nextX][nextY];
-			if (next == '#') {
-				currDirection = (currDirection + 1) % directions.length;
-			} else {
-				startX = nextX;
-				startY = nextY;
-			}
-		}
-	}
-
-	private static int getCurrDirection(int currDirection, int[][] directions) {
-		currDirection++;
-		if (currDirection == directions.length) {
-			currDirection = 0;
-		}
-		return currDirection;
-	}
-
-	public char[][] generateBoard(String input) {
-		String[] lines = input.split("\n");
-		char[][] board = new char[lines.length][lines[0].length()];
-
-		for (int i = 0; i < lines.length; i++) {
-			board[i] = lines[i].toCharArray();
-		}
-		return board;
-	}
-
-
-	public int findSolutions(char[][] board) {
+	public int findSolutions(String input) {
 		int result = 0;
-		
+		Task1 task1 = new Task1();
+		char[][] board = task1.generateBoard(input);
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[0].length; j++) {
 				if (board[i][j] == '.') {
 					board[i][j] = '#';
-					if (solve(board)) {
+					try{
+						task1.solve(board);
+					} catch (CycleDetectedException e){
 						result++;
 					}
 					board[i][j] = '.';
@@ -87,22 +29,12 @@ public class Task2 {
 		return result;
 	}
 
-	private void printBoard(char[][] board) {
-		for (int i = 0; i < board.length; i++) {
-			for (int j = 0; j < board[0].length; j++) {
-				System.out.print(board[i][j]);
-			}
-			System.out.println();
-		}
-	}
-
 	public static void main(String[] args) {
 		try {
 			String input = Files.readString(Path.of("src/main/resources/day6.txt"));
 			Task2 task2 = new Task2();
-			char [][]board = task2.generateBoard(input);
-			int result = task2.findSolutions(board);
-			System.out.println("RESULT IS " + result);
+			int result = task2.findSolutions(input);
+			System.out.println("Result is: " + result);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

@@ -39,8 +39,7 @@ public class TestDay6 {
 				"......#...";
 
 		Task2 task2 = new Task2();
-		char[][] board = task2.generateBoard(input);
-		assertEquals(6, task2.findSolutions(board));
+		assertEquals(6, task2.findSolutions(input));
 	}
 
 
