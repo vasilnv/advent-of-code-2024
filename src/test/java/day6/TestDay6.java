@@ -23,6 +23,25 @@ public class TestDay6 {
 		char[][] board = task1.generateBoard(input);
 		assertEquals(41, task1.solve(board));
 	}
-	
+
+	@Test
+	public void testTask2() {
+		String input = 
+				"....#.....\n" +
+				".........#\n" +
+				"..........\n" +
+				"..#.......\n" +
+				".......#..\n" +
+				"..........\n" +
+				".#..^.....\n" +
+				"........#.\n" +
+				"#.........\n" +
+				"......#...";
+
+		Task2 task2 = new Task2();
+		char[][] board = task2.generateBoard(input);
+		assertEquals(6, task2.findSolutions(board));
+	}
+
 
 }
