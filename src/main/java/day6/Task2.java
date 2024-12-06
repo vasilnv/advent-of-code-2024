@@ -44,9 +44,10 @@ public class Task2 {
 			next = board[nextX][nextY];
 			if (next == '#') {
 				currDirection = (currDirection + 1) % directions.length;
+			} else {
+				startX = nextX;
+				startY = nextY;
 			}
-			startX += directions[currDirection][0];
-			startY += directions[currDirection][1];
 		}
 	}
 
