@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 public class Task2 extends Task1 {
     Map<Integer, Integer> groups = new HashMap<>();
 
-    public String generateRealDisk(String input) {
+    public void generateRealDisk(String input) {
         boolean freeBytesFlag = false;
         StringBuilder result = new StringBuilder(new String());
         int index = 0;
@@ -31,12 +31,10 @@ public class Task2 extends Task1 {
             }
             freeBytesFlag = !freeBytesFlag;
         }
-        return result.toString();
     }
 
     @Override
-    public String compactDisk(String converted) {
-        String result = "";
+    public void compactDisk() {
         int maxIndex;
         List<Integer> numbersInGroups = groups.keySet().stream().collect(Collectors.toList()).stream().sorted((o1, o2) -> o2 - o1).collect(Collectors.toList());
         for (int candidateToMove : numbersInGroups) {
@@ -52,7 +50,6 @@ public class Task2 extends Task1 {
             }
         }
         finalNumbers = new ArrayList<>(oldNumbers);
-        return result;
     }
 
     private int findPlaceToAdd(int groupSize, int maxIndex) {
@@ -76,9 +73,9 @@ public class Task2 extends Task1 {
 
     public static long getResult(String input) {
         Task1 task2 = new Task2();
-        String step1 = task2.generateRealDisk(input);
-        String step2 = task2.compactDisk(step1);
-        return task2.calculateChecksum(step2);
+        task2.generateRealDisk(input);
+        task2.compactDisk();
+        return task2.calculateChecksum();
 
     }
 
