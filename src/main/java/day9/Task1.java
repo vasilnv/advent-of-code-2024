@@ -25,7 +25,7 @@ public class Task1 {
 				for (int i = 0; i < Character.getNumericValue(c); i++) {
 					oldNumbers.add(-1);
 				}
-				totalDots+=Character.getNumericValue(c);
+				totalDots += Character.getNumericValue(c);
 			} else {
 				result.append(String.join("", Collections.nCopies(Character.getNumericValue(c), String.valueOf(index))));
 				for (int i = 0; i < Character.getNumericValue(c); i++) {
@@ -73,7 +73,9 @@ public class Task1 {
 	public long calculateChecksum(String input) {
 		long checksum = 0;
 		for (int i = 0; i < finalNumbers.size(); i++) {
-			checksum += finalNumbers.get(i) * i;
+			if (finalNumbers.get(i) != -1) {
+				checksum += finalNumbers.get(i) * i;
+			}
 		}
 		return checksum;
 	}
@@ -88,7 +90,7 @@ public class Task1 {
 	public static void main(String[] args) {
 		try {
 			String input = Files.readString(Path.of("src/main/resources/day9.txt"));
-			System.out.println("Result is: " + getResult(input));
+			System.out.println("Result is: " + getResult(input)); //6332189866718
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
