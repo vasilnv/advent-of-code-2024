@@ -59,5 +59,46 @@ public class TestDay12 {
 	@Test
 	public void testTask2Simple() {
 		Task2 task2 = new Task2();
+		char[][] board = task2.initBoard(simpleInput);
+		assertEquals(80, task2.getTotalPrice(board));
+
 	}
+
+	@Test
+	public void testTask2Input1() {
+		Task2 task2 = new Task2();
+		char[][] board = task2.initBoard(input1);
+		assertEquals(436, task2.getTotalPrice(board));
+	}
+
+	@Test
+	public void testTask2Input2() {
+		Task2 task2 = new Task2();
+		char[][] board = task2.initBoard(input2);
+		assertEquals(1206, task2.getTotalPrice(board));
+	}
+
+	@Test
+	public void testTask2CustomInput() {
+		String custom = "EEEEE\n" +
+				"EXXXX\n" +
+				"EEEEE\n" +
+				"EXXXX\n" +
+				"EEEEE";
+		Task2 task2 = new Task2();
+		char[][] board = task2.initBoard(custom);
+		assertEquals(236, task2.getTotalPrice(board));
+		
+		custom = "AAAAAA\n" +
+				"AAABBA\n" +
+				"AAABBA\n" +
+				"ABBAAA\n" +
+				"ABBAAA\n" +
+				"AAAAAA";
+		task2 = new Task2();
+		board = task2.initBoard(custom);
+		assertEquals(368, task2.getTotalPrice(board));
+	}
+	
+
 }
