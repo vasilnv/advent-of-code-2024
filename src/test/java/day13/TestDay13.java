@@ -42,4 +42,13 @@ public class TestDay13 {
 		assertEquals(280, task1.solve(config.aCostX, config.aCostY, config.bCostX, config.bCostY, config.targetX, config.targetY));
 		assertEquals(480, task1.findResult(configs));
 	}
+
+	@Test
+	public void testTask2Solver() {
+		Task2 task2 = new Task2();
+		List<Task2.MachineConfig> configs = task2.parseConfig2(input);
+		var config = configs.get(0);
+//		assertEquals(351351351631L, task2.solve(config.aCostX, config.aCostY, config.bCostX, config.bCostY, config.targetX, config.targetY));
+//		assertEquals(1545093008511L, task2.findResult(configs));
+	}
 }

@@ -33,22 +33,22 @@ public class Task1 {
 		return configs;
 	}
 	
-	public int findResult(List<MachineConfig> configs) {
-		int total = 0;
+	public long findResult(List<MachineConfig> configs) {
+		long total = 0;
 		for (MachineConfig config : configs) {
 			total += solve(config.aCostX, config.aCostY, config.bCostX, config.bCostY, config.targetX, config.targetY);
 		}
 		return total;
 	}
 	
-	public int solve(long aX, long aY, long bX, long bY, long targetX, long targetY) {
+	public long solve(long aX, long aY, long bX, long bY, long targetX, long targetY) {
 		long[][] dpX = new long[MAX_BUTTON_HITS][MAX_BUTTON_HITS];
 		long[][] dpY = new long[MAX_BUTTON_HITS][MAX_BUTTON_HITS];
 
 		createDPArray(aX, bX, dpX);
 		createDPArray(aY, bY, dpY);
 	
-		int currentMin = Integer.MAX_VALUE;
+		long currentMin = Long.MAX_VALUE;
 		boolean isChanged = false;
 		for (int i = 0; i < MAX_BUTTON_HITS; i++) {
 			for (int j = 0; j < MAX_BUTTON_HITS; j++) {
