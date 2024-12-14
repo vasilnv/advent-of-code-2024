@@ -1,25 +1,20 @@
 package day11;
 
-import com.github.benmanes.caffeine.cache.Cache;
-import com.github.benmanes.caffeine.cache.Caffeine;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class Task2 extends Task1 {
-	Cache<Pair, Long> cache = Caffeine.newBuilder()
-			.maximumSize(1000)
-			.build();
-
+	Map<Pair, Long> cache = new HashMap<>();
+	
 	public long getArrangementAfter(long num, int blinksLeft) {
 		if (blinksLeft == 0) {
 			return 1;
 		}
-		var potentialRes = cache.getIfPresent(new Pair(num, blinksLeft));
+		var potentialRes = cache.get(new Pair(num, blinksLeft));
 		if (potentialRes != null) {
 			return potentialRes;
 		}
@@ -30,7 +25,7 @@ public class Task2 extends Task1 {
 			return res;
 		}
 		
-		long res = 0;
+		long res;
 		if (String.valueOf(num).length() % 2 == 0) {
 			// 4 / 2 = 2 - 1 0,1 and 1,2
 			int firstHalfIndex = String.valueOf(num).length() / 2;
@@ -53,7 +48,6 @@ public class Task2 extends Task1 {
 			var inputNums = task2.convertInput(input);
 			long total = 0;
 			for (var num : inputNums) {
-				System.out.println("MOVING TO THE NEXT NUMBER: " + num);
 				total += task2.getArrangementAfter(num, 75);
 			}
 			System.out.println("Result is: " + total);

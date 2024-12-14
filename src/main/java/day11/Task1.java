@@ -9,10 +9,8 @@ import java.nio.file.Path;
 import java.util.*;
 
 public class Task1 {
-	Cache<Long, List<Long>> cache = Caffeine.newBuilder()
-			.maximumSize(1000)
-			.build();
-	
+	Map<Long, List<Long>> cache = new HashMap<>();
+
 	public List<Long> convertInput(String input) {
 		List<Long> result = new ArrayList<>();
 		String[] nums = input.split(" ");
@@ -30,9 +28,9 @@ public class Task1 {
 			for (int j = 0; j < initialArrangement.size(); j++) {
 				if (initialArrangement.get(j) == 0) {
 					nextArrangement.add(initialArrangement.get(j) + 1);
-				} else if (cache.getIfPresent(initialArrangement.get(j)) != null) {
+				} else if (cache.get(initialArrangement.get(j)) != null) {
 //					System.out.println("CACHE HIT");
-					nextArrangement.addAll(Objects.requireNonNull(cache.getIfPresent(initialArrangement.get(j))));
+					nextArrangement.addAll(cache.get(initialArrangement.get(j)));
 				} else {
 					if (String.valueOf(initialArrangement.get(j)).length() % 2 == 0) {
 						// 4 / 2 = 2 - 1 0,1 and 1,2
