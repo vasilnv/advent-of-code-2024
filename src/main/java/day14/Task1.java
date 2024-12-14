@@ -3,9 +3,7 @@ package day14;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class Task1 {
 	int nx;
@@ -15,9 +13,14 @@ public class Task1 {
 		Queue<RobotConfig> queue = new LinkedList<>();
 		for (int i = 0; i < robotsConfigs.size(); i++) {
 			queue.add(robotsConfigs.get(i));
-		}	
+		}
 		
 		for (int i = 0; i < totalMovements; i++) {
+			if (checkUniqueRobots(queue)) {
+				System.out.println("Unique robots at step: " + i);
+				printBoard(new ArrayList<>(queue), i);
+				return new ArrayList<>(queue);
+			}
 			List<RobotConfig> nextRound = new LinkedList<>();
 			while (!queue.isEmpty()) {
 				RobotConfig nextRobot = queue.poll();
@@ -34,10 +37,16 @@ public class Task1 {
 		}
 		
 		return finalPositions;
-		
 	}
 
-	private RobotConfig moveRobot(RobotConfig nextRobot) {
+	public void printBoard(List<RobotConfig> robotsConfigs, int step) {
+	}
+
+	public boolean checkUniqueRobots(Queue<RobotConfig> robotsConfigs) {
+		return false;
+	}
+
+	protected RobotConfig moveRobot(RobotConfig nextRobot) {
 		int x = nextRobot.pX;
 		int y = nextRobot.pY;
 		
@@ -123,7 +132,19 @@ public class Task1 {
 			this.vX = vX;
 			this.vY = vY;
 		}
+
+		@Override
+		public boolean equals(Object obj) {
+			return this.pX == ((RobotConfig)obj).pX && this.pY == ((RobotConfig)obj).pY;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(this.pX, this.pY);
+		}
+
 	}
+	
 	public static void main(String[] args) {
 		try {
 			String input = Files.readString(Paths.get("src/main/resources/day14.txt"));
