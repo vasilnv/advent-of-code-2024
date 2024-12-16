@@ -28,13 +28,7 @@ public class TestDay16 extends TestCase {
 
     @Test
     public void testTask2() {
-        Task2 task2 = new Task2(input);
-        assertEquals(45, task2.solve());
-    }
-
-    @Test
-    public void testTask2_1() {
-        Task2_1 task2 = new Task2_1(input, 7036);
-        assertEquals(45, task2.solve());
+        Task2 task2 = new Task2(input, 7036);
+        assertEquals(45, task2.solve().size());
     }
 }
