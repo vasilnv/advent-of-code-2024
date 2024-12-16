@@ -6,7 +6,6 @@ import java.nio.file.Path;
 import java.util.*;
 
 public class Task1 {
-    int bestScore = Integer.MAX_VALUE;
     int[][] directions = new int[][] {{1,0}, {-1,0}, {0,1}, {0,-1}};
     char[][] board;
     private int dist[][];
@@ -99,8 +98,6 @@ public class Task1 {
             if (!settled.contains(v)) {
                 if (dir[0] == u.dirX && dir[1] == u.dirY) {
                     edgeDistance = 1;
-                } else if (dir[0] == -u.dirX && dir[1] == -u.dirY) {
-                    edgeDistance = 2001;
                 } else if ((dir[0] == -direction[1] && dir[1] == direction[0]) || // Counterclockwise rotation
                         (dir[0] == direction[1] && dir[1] == -direction[0])) {
                     edgeDistance = 1001;
