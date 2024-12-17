@@ -34,25 +34,23 @@ public class Task2 {
         Task2 task2 = new Task2(input);
         Task1 task1 = new Task1(input);
         long A = 0;
-//        long prevA = 0;
-//        int operandsSize = task2.operands.size();
-//        String toMatchFirst = task1.operands.get(operandsSize - 1) + "," + task1.operands.get(operandsSize - 2);
-//        while (true) {
-//            task1.registers.put("A", prevA);
-//            if (task1.executeOperations().equals(toMatchFirst)) {
-//                break;
-//            }
-//            prevA++;
-//        }
-        long prevA = 58;
+        long prevA = 0;
+        long preprevA = 0;
+        int operandsSize = task2.operands.size();
+        while (true) {
+            task2.registers.put("A", prevA);
+            if (function.apply(task2) == task2.operands.get(operandsSize - 2)) {
+                break;
+            }
+            prevA++;
+        }
         System.out.println("Prev A is " + prevA);
         for (int j = task2.operands.size() - 3; j >= 0; j--) {
-            A = prevA * 8;
+            A = prevA * 8 - 24;
             long i = A;
             while (true) {
                 task2.registers.put("A", i);
                 if (function.apply(task2) == task2.operands.get(j)) {
-                    prevA = i;
                     task1.getRegisters().put("A", i);
                     List<Long> toMatch = new ArrayList<>();
                     for (int k = j; k < task2.operands.size(); k++) {
@@ -60,6 +58,7 @@ public class Task2 {
                     }
                     String stringToMatch = toMatch.stream().map(Object::toString).collect(Collectors.joining(","));
                     if (task1.executeOperations().equals(stringToMatch)) {
+                        prevA = i;
                         System.out.println("MATCHED " + i + " FOR J = " + j + " AND RES AFTER APPLY = " + task2.operands.get(j));
                         break;
                     }
