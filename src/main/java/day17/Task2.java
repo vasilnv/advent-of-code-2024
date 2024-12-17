@@ -46,7 +46,7 @@ public class Task2 {
         }
         System.out.println("Prev A is " + prevA);
         for (int j = task2.operands.size() - 3; j >= 0; j--) {
-            A = prevA * 8 - 24;
+            A = prevA * 8 - function.apply(task2) * 8;
             long i = A;
             while (true) {
                 task2.registers.put("A", i);
