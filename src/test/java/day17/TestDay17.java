@@ -70,4 +70,16 @@ public class TestDay17 extends TestCase {
         assertEquals(44354, (long)task1.getRegisters().get("B"));
     }
 
+    public void testTask2() {
+        String input = "Register A: 2024\n" +
+                "Register B: 0\n" +
+                "Register C: 0\n" +
+                "\n" +
+                "Program: 0,3,5,4,3,0";
+        assertEquals(117440, Task2.solve(input, task2 -> {
+            long a = task2.getRegisters().get("A");
+            return a % 8;
+        }));
+    }
+
 }
