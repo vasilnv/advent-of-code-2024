@@ -20,12 +20,7 @@ public class Task1 {
         this.W = board[0].length;
         dist = new int[H][W];
         settled = new HashSet<>();
-        pq = new PriorityQueue<>(H * W, new Comparator<Node>() {
-            @Override
-            public int compare(Node o1, Node o2) {
-                return o1.cost - o2.cost;
-            }
-        });
+        pq = new PriorityQueue<>(H * W, Comparator.comparingInt(o -> o.cost));
     }
 
     public void loadBoard(String input) {

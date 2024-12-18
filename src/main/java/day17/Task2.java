@@ -33,9 +33,8 @@ public class Task2 {
     public static long solve(String input, Function<Task2, Long> function) {
         Task2 task2 = new Task2(input);
         Task1 task1 = new Task1(input);
-        long A = 0;
+        long A;
         long prevA = 0;
-        long preprevA = 0;
         int operandsSize = task2.operands.size();
         while (true) {
             task2.registers.put("A", prevA);
@@ -59,7 +58,7 @@ public class Task2 {
                     String stringToMatch = toMatch.stream().map(Object::toString).collect(Collectors.joining(","));
                     if (task1.executeOperations().equals(stringToMatch)) {
                         prevA = i;
-                        System.out.println("MATCHED " + i + " FOR J = " + j + " AND RES AFTER APPLY = " + task2.operands.get(j));
+//                        System.out.println("MATCHED " + i + " FOR J = " + j + " AND RES AFTER APPLY = " + task2.operands.get(j));
                         break;
                     }
                 };
