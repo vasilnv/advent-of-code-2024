@@ -24,9 +24,15 @@ public class TestDay19 extends TestCase {
 
     @Test
     public void testTask2() {
-        Task1 solver = new Task2();
+        Task2 solver = new Task2();
         solver.convertInput(input);
-        assertEquals(16, solver.solve());
+        assertEquals(16, solver.solve(false));
     }
 
+    @Test
+    public void testTask2_dp() {
+        Task2 solver = new Task2();
+        solver.convertInput(input);
+        assertEquals(16, solver.solve(true));
+    }
 }
