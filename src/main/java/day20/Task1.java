@@ -71,9 +71,9 @@ public class Task1 {
                 int newPosX = tempPos[0] + 2 * movement[0];
                 int newPosY = tempPos[1] + 2 * movement[1];
                 if (areInBoundaries(newPosX, newPosY)
-                        && board[tempPos[0] + movement[0]][tempPos[1] + movement[1]] == '#') {
+                        && board[tempPos[0] + movement[0]][tempPos[1] + movement[1]] == '.') {
                     long saved = distances[newPosX][newPosY] - currDist - 2;
-                    System.out.println("SAVING " + saved + " FROM " + currPos[0] + " " + currPos[1]+ " TO " + tempPos[0] + " " + tempPos[1]);
+//                    System.out.println("SAVING " + saved + " FROM " + currPos[0] + " " + currPos[1]+ " TO " + tempPos[0] + " " + tempPos[1]);
                     if (saved >= threshold) {
                         result++;
                     }
@@ -93,7 +93,7 @@ public class Task1 {
         return result;
     }
 
-    private boolean areInBoundaries(int tempPosX, int tempPosY) {
+    protected boolean areInBoundaries(int tempPosX, int tempPosY) {
         return tempPosX >= 0 && tempPosX < board.length &&
                 tempPosY >= 0 && tempPosY < board[0].length;
     }

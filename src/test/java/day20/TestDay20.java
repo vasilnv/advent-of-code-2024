@@ -26,4 +26,11 @@ public class TestDay20 extends TestCase {
         Task1 solver = new Task1(input);
         assertEquals(10, solver.solve(10));
     }
+
+    @Test
+    public void testTask2() {
+        Task2 solver = new Task2(input);
+        assertEquals(7, solver.solve(74));
+    }
+
 }
