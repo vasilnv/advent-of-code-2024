@@ -216,6 +216,10 @@ public class Task1 {
         try {
             String input = Files.readString(Path.of("src/main/resources/day21.txt"));
             System.out.println("Result is: " + Task1.solve(input));
+            long res = Task1.solve(input);
+            if (res != 278568) {
+                System.err.println("THERE IS AN ERROR!!!!");
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
