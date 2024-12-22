@@ -38,4 +38,24 @@ public class TestDay21 extends TestCase {
         assertEquals(126384L, Task1.solve(input));
     }
 
+    @Test
+    public void testTask2() {
+        String smallInput = "029A";
+        // 64 commands length * 379
+        assertEquals(68 * 29, Task2.solve(smallInput));
+    }
+
+    @Test
+    public void testTask2_Rec() {
+        assertEquals(126384, Task2.solve(input));
+    }
+
+    @Test
+    public void testTask2SmallExample() {
+        String smallInput = "540A";
+        // 64 commands length * 379
+        assertEquals(68 * 29, Task2.solve(smallInput));
+    }
+
+
 }

@@ -31,85 +31,78 @@ public class Task2 {
             Map.entry('>', new Coordinate(1, 2))
     );
 
-    Map<Pair, Long> bestCombos = new HashMap<>();
+    Map<ComboPair, Long> cache = new HashMap<>();
 
-    public long getCombinationForRobot(String combo, int robotsLeft) {
+    public long getCombinationForRobot(String combo, int robotsLeft, Coordinate robotDirection) {
         if (robotsLeft == 0) {
-//            System.out.println("Returning COMBO" + combo + " LENGTH: " + combo.length());
             return combo.length();
         }
-//        if (bestCombos.containsKey(new Pair(combo, robotsLeft))) {
-////            System.out.println("CACHE HIT!!!");
-//            return bestCombos.get(new Pair(combo, robotsLeft));
-//        }
 
         String res = transform(combo);
         long total = 0;
         Coordinate prevCoordinate = robotDirectionsMap.get('A');
+        int i = 0;
         for (var currRes : res.split("A")) {
             if (currRes.isEmpty()) {
                 total += 1;
+                i++;
                 continue;
             }
             Combination currCombination = extractCombo(currRes);
-            if (bestCombos.containsKey(new Pair(currCombination, robotsLeft - 1))) {
-                total += bestCombos.get(new Pair(currCombination, robotsLeft - 1));
+            if (cache.containsKey(new ComboPair(currCombination, robotsLeft - 1, prevCoordinate))) {
+                System.out.println("Cache hit for " + currRes + " prev " + prevCoordinate + " left robots:" + (robotsLeft - 1));
+                total += cache.get(new ComboPair(currCombination, robotsLeft - 1, prevCoordinate));
+                prevCoordinate = robotDirectionsMap.get(combo.charAt(i));
+                i++;
                 continue;
             }
+
             List<String> allCombos = generateCombosFor(currRes);
             long min = Long.MAX_VALUE;
             for (var comb : allCombos) {
-                if (isComboValid(comb, prevCoordinate)) {
-                    String nextComb = comb + "A";
-                    long combRes = getCombinationForRobot(nextComb, robotsLeft - 1);
-                    if (combRes < min && apply(comb, prevCoordinate, false)) {
+                String nextComb = comb + "A";
+                if (apply(comb, prevCoordinate, false)) {
+                    long combRes = getCombinationForRobot(nextComb, robotsLeft - 1, robotDirectionsMap.get('A'));
+                    if (combRes < min) {
                         min = combRes;
-                        int nextX = prevCoordinate.x;
-                        int nextY = prevCoordinate.y;
-                        for (var move : comb.toCharArray()) {
-                            if (move == '^') {
-                                nextX -= 1;
-                            } else if (move == 'v') {
-                                nextX += 1;
-                            } else if (move == '>') {
-                                nextY += 1;
-                            } else if (move == '<') {
-                                nextY -= 1;
-                            }
-                        }
-                        prevCoordinate = new Coordinate(nextX, nextY);
                     }
-                } else {
-                    System.out.println("COMBO " + comb + " NOT VALID");
                 }
-
-//                }
             }
-//            System.out.println("PUTTING BEST COMBO FOR " + currRes + "A AND ROBOTS LEFT: " + (robotsLeft - 1) + " AND LENGTH " + min);
-            bestCombos.put(new Pair(currCombination, robotsLeft - 1), min);
             total += min;
-//            prevCoordinate = robotDirectionsMap.get(bestCombo.charAt(bestCombo.length() - 1));
-
+            cache.put(new ComboPair(currCombination, robotsLeft - 1, prevCoordinate), min);
+            prevCoordinate = robotDirectionsMap.get(combo.charAt(i));
+            i++;
         }
-//        bestCombos.put(new Pair(combo, robotsLeft), total);
         return total;
     }
 
-    private boolean isComboValid(String combo, Coordinate initialPos, boolean isInitial) {
-        int startX = initialPos.x;
-        int startY = initialPos.y;
+    private boolean apply(String comb, Coordinate prevCoordinate, boolean isInitial) {
+        Coordinate bomb = new Coordinate(3, 0);
+        if (!isInitial) {
+            bomb = new Coordinate(0, 0);
+        }
+        Coordinate nextCoordinate = new Coordinate(prevCoordinate.x, prevCoordinate.y);
+        for (var move : comb.toCharArray()) {
+            nextCoordinate = moveCoordinate(nextCoordinate, move);
 
-        for (var c : combo.toCharArray()) {
-            if (c == '<') startY--;
-            if (c == '>') startY++;
-            if (c == '^') startX--;
-            if (c == 'v') startX++;
-            if (isInitial && startX == 3 && startY == 0) return false;
-            if (!isInitial && startX == 0 && startY == 0) return false;
+            if (nextCoordinate.equals(bomb)) {
+                return false;
+            }
         }
         return true;
     }
 
+    private Coordinate moveCoordinate(Coordinate prevCoordinate, char move) {
+        int nextX = prevCoordinate.x;
+        int nextY = prevCoordinate.y;
+
+        if (move == '^') nextX -= 1;
+        else if (move == 'v') nextX += 1;
+        else if (move == '<') nextY -= 1;
+        else if (move == '>') nextY += 1;
+
+        return new Coordinate(nextX, nextY);
+    }
 
     private List<String> generateCombosFor(String currRes) {
         Map<Character, Integer> occurences = new HashMap<>();
@@ -176,17 +169,17 @@ public class Task2 {
             var target = robotDirectionsMap.get(c);
             var upDown = begin.x - target.x;
             var leftRight = target.y - begin.y;
+            if (upDown > 0) {
+                currRes.append("^".repeat(upDown));
+            }
             if (leftRight > 0) {
                 currRes.append(">".repeat(leftRight));
-            }
-            if (upDown < 0) {
-                currRes.append("v".repeat(Math.abs(upDown)));
             }
             if (leftRight < 0) {
                 currRes.append("<".repeat(Math.abs(leftRight)));
             }
-            if (upDown > 0) {
-                currRes.append("^".repeat(upDown));
+            if (upDown < 0) {
+                currRes.append("v".repeat(Math.abs(upDown)));
             }
             String bestCombo = currRes.toString();
             result.append(bestCombo);
@@ -198,7 +191,6 @@ public class Task2 {
     }
 
     public String getInitRobotMovements(String input) {
-        System.out.println("GETTING INITAL ROBOT MOVEMENTS");
         var begin = directionsMap.get('A');
         StringBuilder result = new StringBuilder();
         for (var c : input.toCharArray()) {
@@ -226,8 +218,6 @@ public class Task2 {
         return result.toString();
     }
 
-
-
     static long solve(String input) {
         String[] lines = input.split("\n");
         Task2 task2 = new Task2();
@@ -235,94 +225,30 @@ public class Task2 {
         for (var line : lines) {
             String robotsInput = task2.getInitRobotMovements(line);
             long combinationRes = 0;
-            Coordinate prevCoordinate = new Coordinate(3, 2);
+            Coordinate prevCoordinate = directionsMap.get('A');
+            int i = 0;
             for (var part : robotsInput.split("A")) {
+                if (part.isEmpty()) {
+                    combinationRes++;
+                    i++;
+                    continue;
+                }
                 List<String> allCombos = task2.generateCombosFor(part);
                 long min = Long.MAX_VALUE;
                 for (var comb : allCombos) {
-                    if (task2.isInitialComboValid(comb, prevCoordinate)) {
-                        long combRes = task2.getCombinationForRobot(comb + "A", TOTAL_ROBOTS);
-                        if (combRes < min && task2.apply(comb, prevCoordinate, true)) {
-                            min = combRes;
-                            int nextX = prevCoordinate.x;
-                            int nextY = prevCoordinate.y;
-                            for (var move : comb.toCharArray()) {
-                                if (move == '^') {
-                                    nextX -= 1;
-                                } else if (move == 'v') {
-                                    nextX += 1;
-                                } else if (move == '>') {
-                                    nextY += 1;
-                                } else if (move == '<') {
-                                    nextY -= 1;
-                                }
-                            }
-                            prevCoordinate = new Coordinate(nextX, nextY);
-                        }
+                    long combRes = task2.getCombinationForRobot(comb + "A", TOTAL_ROBOTS, robotDirectionsMap.get('A'));
+                    if (task2.apply(comb, prevCoordinate, true) && combRes < min ) {
+                        min = combRes;
                     }
                 }
                 combinationRes += min;
+                prevCoordinate = directionsMap.get(line.charAt(i));
+                i++;
             }
             int numeric = task2.extractNumericCode(line);
             total += combinationRes * numeric;
         }
         return total;
-    }
-
-    private boolean apply(String comb, Coordinate prevCoordinate, boolean isInitial) {
-        Coordinate bomb = new Coordinate(3, 0);
-        if (!isInitial) {
-            bomb = new Coordinate(0, 0);
-        }
-        var nextX = prevCoordinate.x;
-        var nextY = prevCoordinate.y;
-        for (var move : comb.toCharArray()) {
-            if (move == '^') {
-                nextX -= 1;
-            } else if (move == 'v') {
-                nextX += 1;
-            } else if (move == '>') {
-                nextY += 1;
-            } else if (move == '<') {
-                nextY -= 1;
-            }
-            if (new Coordinate(nextX, nextY).equals(bomb)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private boolean isInitialComboValid(String comb, Coordinate prevCoordinate) {
-        if (prevCoordinate.equals(directionsMap.get('7')) && comb.startsWith("vvv")) {
-            return false;
-        }
-        if (prevCoordinate.equals(directionsMap.get('4')) && comb.startsWith("vv")) {
-            return false;
-        }
-        if (prevCoordinate.equals(directionsMap.get('1')) && comb.startsWith("v")) {
-            return false;
-        }
-        if (prevCoordinate.equals(directionsMap.get('0')) && comb.startsWith("<")) {
-            return false;
-        }
-        if (prevCoordinate.equals(directionsMap.get('A')) && comb.startsWith("<<")) {
-            return false;
-        }
-        return true;
-    }
-
-    private boolean isComboValid(String comb, Coordinate prevCoordinate) {
-        if (prevCoordinate.equals(robotDirectionsMap.get('^')) && comb.startsWith("<")) {
-            return false;
-        }
-        if (prevCoordinate.equals(robotDirectionsMap.get('A')) && comb.startsWith("<<")) {
-            return false;
-        }
-        if (prevCoordinate.equals(robotDirectionsMap.get('<')) && comb.startsWith("^")) {
-            return false;
-        }
-        return true;
     }
 
     public int extractNumericCode(String code) {
@@ -356,13 +282,18 @@ public class Task2 {
         public int hashCode() {
             return Objects.hash(x, y);
         }
+
+        @Override
+        public String toString() {
+            return x + "," + y;
+        }
     }
 
     static class Pair {
-        Combination combination;
+        String combination;
         int robotsLeft;
 
-        Pair(Combination combo, int robotsLeft) {
+        Pair(String combo, int robotsLeft) {
             this.combination = combo;
             this.robotsLeft = robotsLeft;
         }
@@ -388,6 +319,9 @@ public class Task2 {
             String input = Files.readString(Path.of("src/main/resources/day21.txt"));
             long res = solve(input);
             System.out.println("Result is: " + res);
+            if (res != 341460772681012L) {
+                System.err.println("THERE IS AN ERROR!!!!");
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
