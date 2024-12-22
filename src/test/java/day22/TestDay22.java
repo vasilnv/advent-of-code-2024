@@ -29,4 +29,14 @@ public class TestDay22 extends TestCase {
         assertEquals(37327623, solver.solve(smallInput));
     }
 
+    @Test
+    public void testTask2() {
+        String smallInput = "1\n" +
+                "2\n" +
+                "3\n" +
+                "2024";
+        Task2 solver = new Task2();
+        assertEquals(23, solver.solve(smallInput));
+    }
+
 }
