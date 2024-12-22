@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Task2 {
-    public static final int TOTAL_ROBOTS = 25;
+    public static int TOTAL_ROBOTS = 25;
     static Map<Character, Coordinate> directionsMap = Map.ofEntries(
             Map.entry('A', new Coordinate(3, 2)),
             Map.entry('0', new Coordinate(3,1)),
@@ -218,7 +218,8 @@ public class Task2 {
         return result.toString();
     }
 
-    static long solve(String input) {
+    static long solve(String input, int total_robots) {
+        TOTAL_ROBOTS = total_robots;
         String[] lines = input.split("\n");
         Task2 task2 = new Task2();
         long total = 0;
@@ -317,7 +318,7 @@ public class Task2 {
     public static void main(String[] args) {
         try {
             String input = Files.readString(Path.of("src/main/resources/day21.txt"));
-            long res = solve(input);
+            long res = solve(input, 25);
             System.out.println("Result is: " + res);
             if (res != 341460772681012L) {
                 System.err.println("THERE IS AN ERROR!!!!");
