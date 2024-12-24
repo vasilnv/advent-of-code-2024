@@ -43,4 +43,10 @@ public class TestDay23 extends TestCase {
         assertEquals(7, solver.solve());
     }
 
+    @Test
+    public void testTask2() {
+        Task2 solver = new Task2(input);
+        assertEquals("[co, de, ka, ta]", solver.solve2());
+    }
+
 }
