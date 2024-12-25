@@ -10,6 +10,10 @@ public class Task1 {
     List<String> rules;
     Map<String, Integer> calculated;
 
+    public List<String> getRules() {
+        return rules;
+    }
+
     public void loadInput(String input) {
         rules = new ArrayList<>();
         calculated = new HashMap<>();
